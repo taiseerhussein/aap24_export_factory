@@ -9,6 +9,7 @@
     local_repo: /var/tmp/github/aap24_conversion_factory.kit
     git_name: ericcames
     git_email: ericcames@msn.com
+    awx_or_aap: awx
 
   tasks:
 
@@ -63,13 +64,13 @@
 
     - name: Create a directory if it does not exist
       ansible.builtin.file:
-        path: "{{ local_repo }}/aap24_configs"
+        path: "{{ local_repo }}/{{ awx_or_aap }}_configs"
         state: directory
         mode: '0755'
 
     - name: Export all objects
       vars:
-        output_path: "{{ local_repo }}/aap24_configs"
+        output_path: "{{ local_repo }}/{{ awx_or_aap }}_configs"
         input_tag:
           - all
         valid_tags:
