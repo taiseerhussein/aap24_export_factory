@@ -4,11 +4,11 @@
   connection: local
   gather_facts: False
   vars:
-    software_repository: https://{{ personal_access_token }}@github.com/ericcames/aap24_conversion_factory.git
+    software_repository: https://{{ personal_access_token }}@github.com:taiseerhussein/aap24-configuration.git
     personal_access_token: git_hub_token
     local_repo: /var/tmp/github/aap24_conversion_factory.kit
-    git_name: ericcames
-    git_email: ericcames@msn.com
+    git_name: taiseerhussein
+    git_email: tkhussein@yahoo.com
     awx_or_aap: awx
 
   tasks:
