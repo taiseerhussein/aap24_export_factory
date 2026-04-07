@@ -9,7 +9,7 @@
     local_repo: /var/tmp/github/aap24-configuration.kit
     git_name: taiseerhussein
     git_email: tkhussein@yahoo.com
-    awx_or_aap: awx
+    awx_or_aap: {{ config_dir }}
 
   tasks:
 
