@@ -26,7 +26,7 @@
 
     - name: Test API reachability from playbook
       ansible.builtin.uri:
-         url: "{{ lookup('ansible.builtin.env', 'CONTROLLER_HOST') }}/api/v2/ping/"
+         url: "https://ec2-18-216-226-170.us-east-2.compute.amazonaws.com/api/v2/ping/"
          method: GET
          validate_certs: false
       delegate_to: localhost
