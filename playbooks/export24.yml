@@ -24,6 +24,13 @@
           - "Red Hat Ansible Automation Platform credential is not set"
           - "Please assign correct credentials to the Job Template"
 
+    - name: Test API reachability from playbook
+      ansible.builtin.uri:
+         url: "{{ lookup('ansible.builtin.env', 'CONTROLLER_HOST') }}/api/v2/ping/"
+         method: GET
+         validate_certs: false
+      delegate_to: localhost
+
     - name: Create a new token
       ansible.controller.token:
         controller_host: "{{ lookup('ansible.builtin.env', 'CONTROLLER_HOST') }}"
