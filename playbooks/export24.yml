@@ -99,6 +99,47 @@
       ansible.builtin.include_role:
         name: infra.controller_configuration.filetree_create
 
+    - name: Find all exported host files
+      ansible.builtin.find:
+        paths: "{{ local_repo }}/{{ awx_or_aap }}_configs"
+        patterns: "hosts.yml"
+        recurse: true
+      register: host_files
+      
+    - name: Load all host files
+      ansible.builtin.include_vars:
+        file: "{{ item.path }}"
+        name: "hosts_{{ ansible_loop.index }}"
+      loop: "{{ host_files.files }}"
+      loop_control:
+        extended: true
+
+    - name: Build merged controller_hosts list
+      ansible.builtin.set_fact:
+        merged_controller_hosts: >-
+          {{
+            merged_controller_hosts | default([])
+            + lookup('vars', 'hosts_' ~ ansible_loop.index).controller_hosts
+          }}
+      loop: "{{ host_files.files }}"
+      loop_control:
+        extended: true
+
+    - name: Create merged directory
+      ansible.builtin.file:
+        path: "{{ merged_hosts_file | dirname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Write merged hosts file
+      ansible.builtin.copy:
+        dest: "{{ merged_hosts_file }}"
+        mode: "0644"
+        content: |
+          ---
+          controller_hosts:
+          {{ merged_controller_hosts | to_nice_yaml(indent=2) | indent(2, false) }}
+
     - name: Add any new playbooks to the software_repository
       changed_when: false
       run_once: true
