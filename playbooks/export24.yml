@@ -100,53 +100,53 @@
       ansible.builtin.include_role:
         name: infra.controller_configuration.filetree_create
 
-    - name: Find all exported host files
-      ansible.builtin.find:
-        paths: "{{ local_repo }}/{{ awx_or_aap }}_configs"
-        patterns: "hosts.yaml"
-        recurse: true
-      register: host_files
+    # - name: Find all exported host files
+    #   ansible.builtin.find:
+    #     paths: "{{ local_repo }}/{{ awx_or_aap }}_configs"
+    #     patterns: "hosts.yaml"
+    #     recurse: true
+    #   register: host_files
 
-    # - name: Load all host files
-    #   ansible.builtin.include_vars:
-    #     file: "{{ item.path }}"
-    #     name: "hosts_{{ ansible_loop.index }}"
+    # # - name: Load all host files
+    # #   ansible.builtin.include_vars:
+    # #     file: "{{ item.path }}"
+    # #     name: "hosts_{{ ansible_loop.index }}"
+    # #   loop: "{{ host_files.files }}"
+    # #   loop_control:
+    # #     extended: true
+
+    # - name: Initialize merged list
+    #   ansible.builtin.set_fact:
+    #     merged_controller_hosts: []
+
+    # - name: Merge controller_hosts from files
+    #   ansible.builtin.set_fact:
+    #     merged_controller_hosts: "{{ merged_controller_hosts + ((lookup('file', item.path) | from_yaml).controller_hosts | default([])) }}"
     #   loop: "{{ host_files.files }}"
-    #   loop_control:
-    #     extended: true
 
-    - name: Initialize merged list
-      ansible.builtin.set_fact:
-        merged_controller_hosts: []
+    # - name: Write merged hosts file
+    #   ansible.builtin.copy:
+    #     dest: "{{ local_repo }}/{{ awx_or_aap }}_configs/hosts.yaml"
+    #     mode: "0644"
+    #     content: |
+    #       ---
+    #       controller_hosts:
+    #       {{ merged_controller_hosts | to_nice_yaml(indent=2) | indent(2, true) }}
 
-    - name: Merge controller_hosts from files
-      ansible.builtin.set_fact:
-        merged_controller_hosts: "{{ merged_controller_hosts + ((lookup('file', item.path) | from_yaml).controller_hosts | default([])) }}"
-      loop: "{{ host_files.files }}"
+    # - name: Create merged directory
+    #   ansible.builtin.file:
+    #     path: "{{ merged_hosts_file | dirname }}"
+    #     state: directory
+    #     mode: "0755"
 
-    - name: Write merged hosts file
-      ansible.builtin.copy:
-        dest: "{{ local_repo }}/{{ awx_or_aap }}_configs/hosts.yaml"
-        mode: "0644"
-        content: |
-          ---
-          controller_hosts:
-          {{ merged_controller_hosts | to_nice_yaml(indent=2) | indent(2, true) }}
-
-    - name: Create merged directory
-      ansible.builtin.file:
-        path: "{{ merged_hosts_file | dirname }}"
-        state: directory
-        mode: "0755"
-
-    - name: Write merged hosts file
-      ansible.builtin.copy:
-        dest: "{{ merged_hosts_file }}"
-        mode: "0644"
-        content: |
-          ---
-          controller_hosts:
-          {{ merged_controller_hosts | to_nice_yaml(indent=2) | indent(2, false) }}
+    # - name: Write merged hosts file
+    #   ansible.builtin.copy:
+    #     dest: "{{ merged_hosts_file }}"
+    #     mode: "0644"
+    #     content: |
+    #       ---
+    #       controller_hosts:
+    #       {{ merged_controller_hosts | to_nice_yaml(indent=2) | indent(2, false) }}
 
     - name: Add any new playbooks to the software_repository
       changed_when: false
