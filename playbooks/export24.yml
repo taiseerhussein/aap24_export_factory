@@ -142,18 +142,19 @@
     #       controller_hosts:
     #       {{ merged_controller_hosts | to_nice_yaml(indent=2) | indent(2, true) }}
 
-    - name: Read and merge all YAML documents from hosts.yaml
+    - name: Read hosts.yaml and remove !unsafe tag
       ansible.builtin.set_fact:
-        merged_controller_hosts: >-
-          {{
-            (lookup('file', hosts_file) | from_yaml_all | list)
-            | selectattr('controller_hosts', 'defined')
-            | map(attribute='controller_hosts')
-            | regex_replace('!unsafe ', '')
-            | flatten
-          }}
+        hosts_file_content: "{{ lookup('file', hosts_file) | regex_replace('!unsafe ', '') }}"
 
-    - name: Rewrite hosts.yaml as a single YAML document
+    - name: Parse all YAML documents
+      ansible.builtin.set_fact:
+        hosts_documents: "{{ hosts_file_content | from_yaml_all | list }}"
+
+    - name: Merge controller_hosts into one real list
+      ansible.builtin.set_fact:
+        merged_controller_hosts: "{{ hosts_documents | selectattr('controller_hosts', 'defined') | map(attribute='controller_hosts') | flatten | list }}"
+
+    - name: Rewrite hosts.yaml as single YAML document
       ansible.builtin.copy:
         dest: "{{ hosts_file }}"
         mode: "0644"
