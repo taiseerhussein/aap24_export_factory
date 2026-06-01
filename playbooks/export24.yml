@@ -10,7 +10,7 @@
     git_name: taiseerhussein
     git_email: tkhussein@yahoo.com
     awx_or_aap: "{{ config_dir }}"
-    merged_hosts_file: "{{ config_dir }}/merged/controller_hosts.yaml"
+    merged_hosts_file: "{{ config_dir }}/merged/controller_hosts.yml"
 
   tasks:
 
