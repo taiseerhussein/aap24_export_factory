@@ -12,7 +12,7 @@
     awx_or_aap: "{{ config_dir }}"
     merged_hosts_file: "{{ config_dir }}/merged/controller_hosts.yaml"
     # /var/tmp/github/aap24-configuration.kit/aap24-hosts_configs/hosts.yaml
-    hosts_file: "{{ local_repo }}/{{ awx_or_aap }}/hosts.yaml"
+    hosts_file: "{{ local_repo }}/{{ awx_or_aap }}_configs/hosts.yaml"
   tasks:
 
     # fail with good error for Automation controller user
