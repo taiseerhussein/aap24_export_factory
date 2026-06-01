@@ -10,6 +10,7 @@
     git_name: taiseerhussein
     git_email: tkhussein@yahoo.com
     awx_or_aap: "{{ config_dir }}"
+    merged_hosts_file: "{{ config_dir }}/merged/controller_hosts.yml"
 
   tasks:
 
@@ -105,7 +106,7 @@
         patterns: "hosts.yml"
         recurse: true
       register: host_files
-      
+
     - name: Load all host files
       ansible.builtin.include_vars:
         file: "{{ item.path }}"
