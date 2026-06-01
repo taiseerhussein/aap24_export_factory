@@ -73,7 +73,7 @@
     - name: Export all objects
       vars:
         output_path: "{{ local_repo }}/{{ awx_or_aap }}_configs"
-        flatten_output: true
+        # flatten_output: true
         input_tag:
           - all
         valid_tags:
