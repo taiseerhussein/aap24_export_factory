@@ -103,7 +103,7 @@
     - name: Find all exported host files
       ansible.builtin.find:
         paths: "{{ local_repo }}/{{ awx_or_aap }}_configs"
-        patterns: "hosts.yml"
+        patterns: "hosts.yaml"
         recurse: true
       register: host_files
 
