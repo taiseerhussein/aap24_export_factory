@@ -149,6 +149,7 @@
             (lookup('file', hosts_file) | from_yaml_all | list)
             | selectattr('controller_hosts', 'defined')
             | map(attribute='controller_hosts')
+            | regex_replace('!unsafe ', '')
             | flatten
           }}
 
