@@ -115,16 +115,23 @@
       loop_control:
         extended: true
 
-    - name: Build merged controller_hosts list
+    - name: Initialize merged list
       ansible.builtin.set_fact:
-        merged_controller_hosts: >-
-          {{
-            merged_controller_hosts | default([])
-            + lookup('vars', 'hosts_' ~ ansible_loop.index).controller_hosts
-          }}
-      loop: "{{ host_files.files }}"
-      loop_control:
-        extended: true
+        merged_controller_hosts: []
+
+    - name: Merge controller_hosts from files
+      ansible.builtin.set_fact:
+        merged_controller_hosts: "{{ merged_controller_hosts + ((lookup('file', item) | from_yaml).controller_hosts | default([])) }}"
+      loop: "{{ host_files }}"
+
+    - name: Write merged hosts file
+      ansible.builtin.copy:
+        dest: "{{ local_repo }}/{{ awx_or_aap }}_configs/hosts.yml"
+        mode: "0644"
+        content: |
+          ---
+          controller_hosts:
+          {{ merged_controller_hosts | to_nice_yaml(indent=2) | indent(2, true) }}
 
     - name: Create merged directory
       ansible.builtin.file:
