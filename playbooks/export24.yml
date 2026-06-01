@@ -10,7 +10,7 @@
     git_name: taiseerhussein
     git_email: tkhussein@yahoo.com
     awx_or_aap: "{{ config_dir }}"
-    merged_hosts_file: "{{ config_dir }}/merged/controller_hosts.yml"
+    merged_hosts_file: "{{ config_dir }}/merged/controller_hosts.yaml"
 
   tasks:
 
@@ -126,7 +126,7 @@
 
     - name: Write merged hosts file
       ansible.builtin.copy:
-        dest: "{{ local_repo }}/{{ awx_or_aap }}_configs/hosts.yml"
+        dest: "{{ local_repo }}/{{ awx_or_aap }}_configs/hosts.yaml"
         mode: "0644"
         content: |
           ---
