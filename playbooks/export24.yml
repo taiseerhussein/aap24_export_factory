@@ -122,7 +122,7 @@
     - name: Merge controller_hosts from files
       ansible.builtin.set_fact:
         merged_controller_hosts: "{{ merged_controller_hosts + ((lookup('file', item) | from_yaml).controller_hosts | default([])) }}"
-      loop: "{{ host_files }}"
+      loop: "{{ host_files.files }}"
 
     - name: Write merged hosts file
       ansible.builtin.copy:
