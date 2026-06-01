@@ -126,7 +126,7 @@
 
     - name: Write merged hosts file
       ansible.builtin.copy:
-        dest: "{{ local_repo }}/{{ awx_or_aap }}_configs/hosts.yaml"
+        dest: "{{ local_repo }}/{{ awx_or_aap }}_configs/hosts.yml"
         mode: "0644"
         content: |
           ---
