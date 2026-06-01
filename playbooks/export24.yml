@@ -107,13 +107,13 @@
         recurse: true
       register: host_files
 
-    - name: Load all host files
-      ansible.builtin.include_vars:
-        file: "{{ item.path }}"
-        name: "hosts_{{ ansible_loop.index }}"
-      loop: "{{ host_files.files }}"
-      loop_control:
-        extended: true
+    # - name: Load all host files
+    #   ansible.builtin.include_vars:
+    #     file: "{{ item.path }}"
+    #     name: "hosts_{{ ansible_loop.index }}"
+    #   loop: "{{ host_files.files }}"
+    #   loop_control:
+    #     extended: true
 
     - name: Initialize merged list
       ansible.builtin.set_fact:
