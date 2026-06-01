@@ -116,10 +116,15 @@
         merged_controller_hosts: >-
           {{
             merged_controller_hosts
-            + ((lookup('file', item.path) | from_yaml).controller_hosts | default([]))
+            +
+            (
+             (lookup('file', item.path) | from_yaml_all | list)
+             | selectattr('controller_hosts', 'defined')
+             | map(attribute='controller_hosts')
+             | flatten
+           )
           }}
       loop: "{{ host_files.files }}"
-      when: (lookup('file', item.path) | from_yaml).controller_hosts is defined
 
     - name: Create merged directory
       ansible.builtin.file:
