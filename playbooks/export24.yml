@@ -182,7 +182,7 @@
 
     - name: Find normalized YAML files
       ansible.builtin.find:
-        paths: "{{ normalized_dir }}"
+        paths: "{{ local_repo }}/{{ awx_or_aap }}_configs"
         patterns:
           - "*.yml"
           - "*.yaml"
