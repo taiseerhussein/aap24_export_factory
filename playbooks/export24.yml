@@ -4,8 +4,9 @@
   connection: local
   gather_facts: False
   vars:
+    personal_access_token: "{{ lookup('ansible.builtin.env', 'GITHUB_TOKEN') }}"
     software_repository: https://{{ personal_access_token }}@github.com/taiseerhussein/aap24-configuration.git
-    personal_access_token: git_hub_token
+    # personal_access_token: git_hub_token
     local_repo: /var/tmp/github/aap24-configuration.kit
     git_name: taiseerhussein
     git_email: tkhussein@yahoo.com
