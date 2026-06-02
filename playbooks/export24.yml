@@ -180,6 +180,29 @@
       loop: "{{ current_files.files }}"
       changed_when: true
 
+    - name: Find normalized YAML files
+      ansible.builtin.find:
+        paths: "{{ normalized_dir }}"
+        patterns:
+          - "*.yml"
+          - "*.yaml"
+        file_type: file
+      register: normalized_yaml_files
+
+    - name: Replace ORGANIZATIONLESS with Default
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: 'ORGANIZATIONLESS'
+        replace: 'Default'
+      loop: "{{ normalized_yaml_files.files  }}"
+
+    - name: Remove inline !unsafe tag
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '!unsafe\s*'
+        replace: ''
+      loop: "{{ normalized_yaml_files.files }}"
+
     - name: Add any new playbooks to the software_repository
       changed_when: false
       run_once: true
