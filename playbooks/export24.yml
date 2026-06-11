@@ -71,6 +71,18 @@
         state: directory
         mode: '0755'
 
+
+    - name: Clean previous export directory
+      ansible.builtin.file:
+        path: "{{ local_repo }}/{{ awx_or_aap }}_configs"
+        state: absent
+
+    - name: Recreate export directory
+      ansible.builtin.file:
+        path: "{{ local_repo }}/{{ awx_or_aap }}_configs"
+        state: directory
+        mode: "0755"
+
     - name: Export all objects
       vars:
         output_path: "{{ local_repo }}/{{ awx_or_aap }}_configs"
